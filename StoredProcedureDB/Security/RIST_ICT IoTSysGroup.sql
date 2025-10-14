@@ -1,0 +1,2 @@
+﻿CREATE USER [RIST\ICT IoTSysGroup] FOR LOGIN [RIST\ICT IoTSysGroup];
+

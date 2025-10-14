@@ -1,0 +1,3 @@
+﻿CREATE SCHEMA [jig]
+    AUTHORIZATION [dbo];
+

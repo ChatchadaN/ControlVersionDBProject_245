@@ -1,0 +1,192 @@
+﻿-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+CREATE PROCEDURE [dbo].[sp_get_setupchecksheet_getftsetupreportbymcno]
+	-- Add the parameters for the stored procedure here
+	@MCNo varchar(30)
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+
+	SELECT [MCNo]
+		  ,[LotNo]
+		  ,[PackageName]
+		  ,[DeviceName]
+		  ,[FTDevice]
+		  ,[ProgramName]
+		  ,[TesterType]
+		  ,CASE WHEN [JobId] IS NULL	THEN '0'								
+			    ELSE [JobId] END AS JobId
+		  ,[JobName]
+		  ,[TestFlow]
+		  ,[OISRank]
+		  ,[OISDevice]
+		  ,[QRCodesocket1]
+		  ,[QRCodesocket2]
+		  ,[QRCodesocket3]
+		  ,[QRCodesocket4]
+		  ,[QRCodesocketChannel1]
+		  ,[QRCodesocketChannel2]
+		  ,[QRCodesocketChannel3]
+		  ,[QRCodesocketChannel4]
+		  ,[QRCodesocket5]
+		  ,[QRCodesocket6]
+		  ,[QRCodesocket7]
+		  ,[QRCodesocket8]
+		  ,[QRCodesocketChannel5]
+		  ,[QRCodesocketChannel6]
+		  ,[QRCodesocketChannel7]
+		  ,[QRCodesocketChannel8]
+		  ,[TesterNoA]
+		  ,[TesterNoB]
+		  ,[TesterNoC]
+		  ,[TesterNoD]
+		  ,[TesterNoE]
+		  ,[TesterNoF]
+		  ,[TesterNoG]
+		  ,[TesterNoH]
+		  ,[TesterNoAQRcode]
+		  ,[TesterNoBQRcode]
+		  ,[TesterNoCQRcode]
+		  ,[TesterNoDQRcode]
+		  ,[TesterNoEQRcode]
+		  ,[TesterNoFQRcode]
+		  ,[TesterNoGQRcode]
+		  ,[TesterNoHQRcode]
+		  ,[TestBoxA]
+		  ,[TestBoxB]
+		  ,[TestBoxC]
+		  ,[TestBoxD]
+		  ,[TestBoxE]
+		  ,[TestBoxF]
+		  ,[TestBoxG]
+		  ,[TestBoxH]
+		  ,[TestBoxAQRcode]
+		  ,[TestBoxBQRcode]
+		  ,[TestBoxCQRcode]
+		  ,[TestBoxDQRcode]
+		  ,[TestBoxEQRcode]
+		  ,[TestBoxFQRcode]
+		  ,[TestBoxGQRcode]
+		  ,[TestBoxHQRcode]
+		  ,[ChannelAFTB]
+		  ,[ChannelBFTB]
+		  ,[ChannelCFTB]
+		  ,[ChannelDFTB]
+		  ,[ChannelEFTB]
+		  ,[ChannelFFTB]
+		  ,[ChannelGFTB]
+		  ,[ChannelHFTB]
+		  ,[ChannelAFTBQRcode]
+		  ,[ChannelBFTBQRcode]
+		  ,[ChannelCFTBQRcode]
+		  ,[ChannelDFTBQRcode]
+		  ,[ChannelEFTBQRcode]
+		  ,[ChannelFFTBQRcode]
+		  ,[ChannelGFTBQRcode]
+		  ,[ChannelHFTBQRcode]
+		  ,[AdaptorA]
+		  ,[AdaptorB]
+		  ,[AdaptorAQRcode]
+		  ,[AdaptorBQRcode]
+		  ,[DutcardA]
+		  ,[DutcardB]
+		  ,[DutcardAQRcode]
+		  ,[DutcardBQRcode]
+		  ,[BridgecableA]
+		  ,[BridgecableB]
+		  ,[BridgecableAQRcode]
+		  ,[BridgecableBQRcode]
+		  ,[SetupStartDate]
+		  ,[SetupEndDate]
+		  ,[OptionName1]
+		  ,[OptionName2]
+		  ,[OptionName3]
+		  ,[OptionName4]
+		  ,[OptionName5]
+		  ,[OptionName6]
+		  ,[OptionName7]
+		  ,[OptionName8]
+		  ,[OptionName9]
+		  ,[OptionName10]
+		  ,[OptionType1]
+		  ,[OptionType2]
+		  ,[OptionType3]
+		  ,[OptionType4]
+		  ,[OptionType5]
+		  ,[OptionType6]
+		  ,[OptionType7]
+		  ,[OptionType8]
+		  ,[OptionType9]
+		  ,[OptionType10]
+		  ,[OptionType1QRcode]
+		  ,[OptionType2QRcode]
+		  ,[OptionType3QRcode]
+		  ,[OptionType4QRcode]
+		  ,[OptionType5QRcode]
+		  ,[OptionType6QRcode]
+		  ,[OptionType7QRcode]
+		  ,[OptionType8QRcode]
+		  ,[OptionType9QRcode]
+		  ,[OptionType10QRcode]
+		  ,[OptionSetting1]	 --Not use
+		  ,[OptionSetting2]	 --Not use
+		  ,[OptionSetting3]	 --Not use
+		  ,[OptionSetting4]	 --Not use
+		  ,[OptionSetting5]	 --Not use
+		  ,[OptionSetting6]	 --Not use
+		  ,[OptionSetting7]	 --Not use
+		  ,[OptionSetting8]	 --Not use
+		  ,[OptionSetting9]	 --Not use
+		  ,[OptionSetting10] --Not use
+		  ,[TypeChangePackage] --Not use
+		  ,[BoxTesterConnection]
+		  ,[OptionSetup]
+		  ,[OptionConnection]
+		  ,[QfpVacuumPad]
+		  ,[QfpSocketSetup]
+		  ,[QfpSocketDecision]
+		  ,[QfpDecisionLeadPress]
+		  ,[QfpTray]
+		  ,[SopStopper]
+		  ,[SopSocketDecision]
+		  ,[SopDecisionLeadPress]
+		  --,[ManualCheckTest]
+		  ,CASE WHEN [ManualCheckTest] IS NULL	THEN '0'								
+			    ELSE [ManualCheckTest] END AS ManualCheckTest
+		  ,[ManualCheckTE]
+		  --,[ManualCheckRequestTE]
+		  ,CASE WHEN [ManualCheckRequestTE] IS NULL THEN '0'
+				ELSE [ManualCheckRequestTE] END AS ManualCheckRequestTE
+		  ,[ManualCheckRequestTEConfirm]
+		  ,[PkgGood]
+		  ,[PkgNG]
+		  ,[PkgNishikiCamara]
+		  ,[PkgGoodJudgement]
+		  ,[PkgNGJudgement]
+		  ,[PkgNishikiCamaraJudgement]
+		  ,[PkqBantLead]
+		  ,[PkqKakeHige]
+		  ,[BgaSmallBall]
+		  ,[BgaBentTape]
+		  ,[Bge5S]
+		  ,[SetupStatus]
+		  ,[ConfirmedCheckSheetOp]
+		  ,[ConfirmedCheckSheetSection]
+		  ,[ConfirmedCheckSheetGL]
+		  ,[ConfirmedShonoSection]
+		  ,[ConfirmedShonoGL]
+		  ,[ConfirmedShonoOp]
+		  ,[StatusShonoOP]
+		  ,[SetupConfirmDate]
+
+	FROM DBx.dbo.FTSetupReport
+
+	WHERE MCNo = @MCNo
+END

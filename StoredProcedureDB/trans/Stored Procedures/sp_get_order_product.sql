@@ -1,0 +1,13 @@
+﻿CREATE PROCEDURE [trans].[sp_get_order_product] @po_id INT
+AS
+	SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
+
+	SELECT [PRODUCTIONS].*
+		FROM [APCSPRODB].[MATERIAL].PRODUCTIONS [PRODUCTIONS], APCSProDWH.[ONEWORLD].[PODATA] [PO]
+		INNER JOIN [APCSPRODB].[MATERIAL].SUPPLIER_CONVERSION [CONVERSION] ON [CONVERSION].PO_SUPPLIER_CD = PO.SUPPLIERCODE
+		WHERE 
+			MATERIAL.FN_STRIPCHARACTERS([PRODUCTIONS].[NAME], '^a-z0-9') = MATERIAL.FN_STRIPCHARACTERS(PO.SPECIFICATION, '^a-z0-9') AND [PRODUCTIONS].SUPPLIER_CD = [CONVERSION].PROD_SUPPLIER_CD
+			AND PO.ID = @po_id;
+			
+-- ********************** --  -- ********************** --  -- ********************** --  -- ********************** --  -- ********************** --  -- ********************** --  
+

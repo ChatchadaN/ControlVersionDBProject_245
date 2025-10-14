@@ -1,0 +1,36 @@
+﻿-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+CREATE PROCEDURE[stripmap].[sp_r_editable_bin_code]
+	-- Add the parameters for the stored procedure here
+	@DATABASE_NAME NVARCHAR(128),	
+	@WORK_ID INT
+
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	DECLARE @CMD_TEXT NVARCHAR(4000) = '';
+
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	SET @CMD_TEXT  = N'';
+	SET @CMD_TEXT += N'select DISTINCT ';
+	SET @CMD_TEXT += N'	' + 'BD.id as BIN_ID, '
+	SET @CMD_TEXT += N'	' + 'BD.bin_description as BIN_DEF, '
+	SET @CMD_TEXT += N'	' + 'BD.die_quality as STATUS, '
+	SET @CMD_TEXT += N'	' + 'BD.custom_display_color as DEFAULT_COLOR, '
+	SET @CMD_TEXT += N'	' + 'BD.custom_display_color as CUSTOM_COLOR '
+	SET @CMD_TEXT += N'from ' + @DATABASE_NAME + '.trans.works as WK with(nolock) '
+	SET @CMD_TEXT += N'inner join ' + @DATABASE_NAME + '.trans.lots as LO with(nolock) on LO.id = WK.lot_id '
+	SET @CMD_TEXT += N'inner join ' + @DATABASE_NAME + '.method.device_flows as DF with(nolock) on DF.device_slip_id = LO.device_slip_id and DF.step_no <= LO.step_no '
+	SET @CMD_TEXT += N'inner join ' + @DATABASE_NAME + '.mc.model_bin_upload as MBU with(nolock) on MBU.bincode_set_id = DF.bincode_set_id '
+	SET @CMD_TEXT += N'inner join ' + @DATABASE_NAME + '.mc.bin_definitions as BD with(nolock) on BD.id = MBU.bin_id '
+	SET @CMD_TEXT += N'where WK.id = ' + CONVERT(varchar,@WORK_ID) + ' '
+	EXECUTE(@CMD_TEXT)
+
+	return @@ROWCOUNT
+END

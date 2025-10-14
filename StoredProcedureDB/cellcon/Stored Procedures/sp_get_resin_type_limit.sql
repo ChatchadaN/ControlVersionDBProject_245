@@ -1,0 +1,71 @@
+﻿-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+CREATE PROCEDURE [cellcon].[sp_get_resin_type_limit] 
+	-- Add the parameters for the stored procedure here
+	@resin_type VARCHAR(max) = '%'
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	--DECLARE @resin_type VARCHAR(max) 
+ 
+SELECT 
+CASE @resin_type
+    WHEN 'MR1931D' THEN 4
+	WHEN 'MR1931E' THEN 4
+	WHEN 'MR1931F' THEN 4
+	WHEN 'MR1931J' THEN 4
+	WHEN 'L2074' THEN 4
+	WHEN 'M1075B' THEN 4
+	WHEN 'M1075D' THEN 4 
+	WHEN 'H1071' THEN 4
+	WHEN 'H1071A' THEN 2
+	WHEN 'J2072A' THEN 4
+	WHEN 'J2075B' THEN 4
+	WHEN 'J2072B' THEN 4
+	WHEN 'N1011' THEN 4
+	WHEN 'A2961B' THEN 8
+	WHEN 'A2961C' THEN 8
+	WHEN 'A2961D' THEN 8 
+	WHEN 'W4052' THEN 4
+	WHEN 'V3051' THEN 4
+	WHEN 'M3001A' THEN 4
+	WHEN 'M3001B' THEN 4
+	WHEN 'M3001C' THEN 4
+	WHEN 'M3001D' THEN 4
+	WHEN 'M3001E' THEN 4
+	WHEN 'Q2031A' THEN 4
+	WHEN 'Q2031' THEN 4
+	WHEN 'EME5900HR' THEN 8
+	WHEN 'G4971(HC100)' THEN 4
+	WHEN 'U2041' THEN 4
+	WHEN 'U2041A' THEN 4
+	WHEN 'S2084D' THEN 4
+	WHEN 'J1991L' THEN 8
+	WHEN 'C4963' THEN 4
+	WHEN 'V1121' THEN 4
+	WHEN 'H4981' THEN 4
+	WHEN 'P4081' THEN 4
+	WHEN 'K3992' THEN 8
+	WHEN 'A3053' THEN 8
+	WHEN 'N2076' THEN 3
+	WHEN 'J2076' THEN 3
+	WHEN 'B3054' THEN 4
+	WHEN 'E2063' THEN 4
+	WHEN 'R2083' THEN 4
+	WHEN 'R2083A' THEN 4
+	WHEN 'G700L' THEN 3
+	WHEN 'G700LS' THEN 3
+	WHEN 'F1161' THEN 3
+	WHEN 'G2171' THEN 4
+	WHEN 'G2171A' THEN 4
+	WHEN 'L1231' THEN 4
+    ELSE 1
+END AS LIMIT
+END

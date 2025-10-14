@@ -1,0 +1,3 @@
+﻿CREATE SCHEMA [lsms]
+    AUTHORIZATION [dbo];
+

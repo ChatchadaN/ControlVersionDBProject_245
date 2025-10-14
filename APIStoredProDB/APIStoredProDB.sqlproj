@@ -1,0 +1,323 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Name>APIStoredProDB</Name>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectVersion>4.1</ProjectVersion>
+    <ProjectGuid>{83e1b819-a6b8-4abb-9762-156211ef0725}</ProjectGuid>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql160DatabaseSchemaProvider</DSP>
+    <OutputType>Database</OutputType>
+    <RootPath>
+    </RootPath>
+    <RootNamespace>APIStoredProDB</RootNamespace>
+    <AssemblyName>APIStoredProDB</AssemblyName>
+    <ModelCollation>1033,CI</ModelCollation>
+    <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
+    <DeployToDatabase>True</DeployToDatabase>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetLanguage>CS</TargetLanguage>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <SqlServerVerification>False</SqlServerVerification>
+    <IncludeCompositeObjects>True</IncludeCompositeObjects>
+    <TargetDatabaseSet>True</TargetDatabaseSet>
+    <DefaultCollation>SQL_Latin1_General_CP1_CI_AS</DefaultCollation>
+    <DefaultFilegroup>PRIMARY</DefaultFilegroup>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">11.0</VisualStudioVersion>
+    <!-- Default to the v11.0 targets path if the targets file for the current VS version is not found -->
+    <SSDTExists Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets')">True</SSDTExists>
+    <VisualStudioVersion Condition="'$(SSDTExists)' == ''">11.0</VisualStudioVersion>
+  </PropertyGroup>
+  <Import Condition="'$(SQLDBExtensionsRefPath)' != ''" Project="$(SQLDBExtensionsRefPath)\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <ItemGroup>
+    <Folder Include="Properties" />
+    <Folder Include="dbo\" />
+    <Folder Include="dbo\Tables\" />
+    <Folder Include="Security\" />
+    <Folder Include="atom\" />
+    <Folder Include="atom\Functions\" />
+    <Folder Include="trans\" />
+    <Folder Include="trans\Functions\" />
+    <Folder Include="trans\Stored Procedures\" />
+    <Folder Include="api\" />
+    <Folder Include="api\Stored Procedures\" />
+    <Folder Include="material\" />
+    <Folder Include="material\Stored Procedures\" />
+    <Folder Include="jig\" />
+    <Folder Include="jig\Stored Procedures\" />
+    <Folder Include="dbo\Stored Procedures\" />
+    <Folder Include="mc\" />
+    <Folder Include="mc\Stored Procedures\" />
+    <Folder Include="man\" />
+    <Folder Include="man\Stored Procedures\" />
+    <Folder Include="lds\" />
+    <Folder Include="lds\Stored Procedures\" />
+    <Folder Include="atom\Stored Procedures\" />
+    <Folder Include="method\" />
+    <Folder Include="method\Stored Procedures\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="dbo\Tables\exec_sp_history_eslip.sql" />
+    <Build Include="dbo\Tables\lot_masks.sql" />
+    <Build Include="dbo\Tables\lot_request_ocr_records.sql" />
+    <Build Include="dbo\Tables\exec_sp_history_jig.sql" />
+    <Build Include="dbo\Tables\exec_sp_history.sql" />
+    <Build Include="Security\apiuser.sql" />
+    <Build Include="Security\system.sql" />
+    <Build Include="Security\apcsuser.sql" />
+    <Build Include="Security\DBxUser.sql" />
+    <Build Include="Security\owneruser.sql" />
+    <Build Include="Security\ApplicationUser.sql" />
+    <Build Include="Security\ApplicationUser_1.sql" />
+    <Build Include="Security\SysAdminUser.sql" />
+    <Build Include="Security\SysAdminUser_1.sql" />
+    <Build Include="Security\RIST_ICT DatabaseAdminsGroup.sql" />
+    <Build Include="Security\RIST_ICT DatabaseAdminsGroup_1.sql" />
+    <Build Include="Security\RIST_ICT APIDevGroup.sql" />
+    <Build Include="Security\RIST_ICT APIDevGroup_1.sql" />
+    <Build Include="Security\RoleMemberships.sql" />
+    <Build Include="atom\Functions\fnc_get_flow.sql" />
+    <Build Include="atom\Functions\fnc_get_recipe.sql" />
+    <Build Include="trans\Functions\fnc_get_e_slip_id.sql" />
+    <Build Include="trans\Stored Procedures\sp_get_outsource_lot_info.sql" />
+    <Build Include="api\Stored Procedures\sp_read_machine_machine_authentication.sql" />
+    <Build Include="trans\Stored Procedures\sp_get_lot_info.sql" />
+    <Build Include="trans\Stored Procedures\sp_set_carrier.sql" />
+    <Build Include="trans\Stored Procedures\sp_get_surpluses.sql" />
+    <Build Include="material\Stored Procedures\sp_set_edit_categories.sql" />
+    <Build Include="material\Stored Procedures\sp_set_suppliers.sql" />
+    <Build Include="material\Stored Procedures\sp_set_flow_details.sql" />
+    <Build Include="material\Stored Procedures\sp_get_checkmaterial_set.sql" />
+    <Build Include="material\Stored Procedures\sp_set_flow_patterns.sql" />
+    <Build Include="api\Stored Procedures\sp_create_ocr_add_andon.sql" />
+    <Build Include="material\Stored Procedures\sp_set_product_slip.sql" />
+    <Build Include="material\Stored Procedures\sp_set_locations.sql" />
+    <Build Include="material\Stored Procedures\sp_set_edit_suppliers.sql" />
+    <Build Include="material\Stored Procedures\sp_set_stockin_material_records.sql" />
+    <Build Include="jig\Stored Procedures\sp_get_jig_data.sql" />
+    <Build Include="api\Stored Procedures\sp_create_ocr_denpyo_mark.sql" />
+    <Build Include="material\Stored Procedures\sp_set_edit_locations.sql" />
+    <Build Include="dbo\Stored Procedures\sp_get_trans_lots_details.sql" />
+    <Build Include="trans\Stored Procedures\sp_get_data_lot_history_log.sql" />
+    <Build Include="dbo\Stored Procedures\sp_set_lots_mark_no.sql" />
+    <Build Include="api\Stored Procedures\sp_read_slip_get_denpyo_print.sql" />
+    <Build Include="dbo\Stored Procedures\sp_set_package_mark.sql" />
+    <Build Include="material\Stored Procedures\sp_get_check_repack.sql" />
+    <Build Include="material\Stored Procedures\sp_get_material_repack.sql" />
+    <Build Include="trans\Stored Procedures\sp_set_CompareQrLabelCenter.sql" />
+    <Build Include="mc\Stored Procedures\sp_get_models_filter.sql" />
+    <Build Include="material\Stored Procedures\sp_set_edit_repack.sql" />
+    <Build Include="man\Stored Procedures\sp_get_user_authentication.sql" />
+    <Build Include="man\Stored Procedures\sp_get_user_authorization.sql" />
+    <Build Include="man\Stored Procedures\sp_get_user_identification.sql" />
+    <Build Include="material\Stored Procedures\sp_set_delete_repack.sql" />
+    <Build Include="material\Stored Procedures\sp_set_repack_material.sql" />
+    <Build Include="api\Stored Procedures\sp_ocr_read_request.sql" />
+    <Build Include="api\Stored Procedures\sp_trc_read_record.sql" />
+    <Build Include="trans\Stored Procedures\sp_get_data_lot.sql" />
+    <Build Include="api\Stored Procedures\sp_trc_read_record_id.sql" />
+    <Build Include="api\Stored Procedures\sp_create_andon_add_record.sql" />
+    <Build Include="api\Stored Procedures\sp_trc_update_record_normal.sql" />
+    <Build Include="api\Stored Procedures\sp_update_andon_clear_normal_record.sql" />
+    <Build Include="api\Stored Procedures\sp_slip_read_slip.sql" />
+    <Build Include="api\Stored Procedures\sp_slip_read_hasuu.sql" />
+    <Build Include="man\Stored Procedures\sp_get_employee.sql" />
+    <Build Include="trans\Stored Procedures\sp_get_language.sql" />
+    <Build Include="dbo\Stored Procedures\sp_get_config_functions.sql" />
+    <Build Include="man\Stored Procedures\sp_get_approval_flow.sql" />
+    <Build Include="trans\Stored Procedures\sp_get_carrier.sql" />
+    <Build Include="dbo\Stored Procedures\get_categories.sql" />
+    <Build Include="material\Stored Procedures\sp_get_material_ogi_ai.sql" />
+    <Build Include="material\Stored Procedures\sp_get_categories.sql" />
+    <Build Include="trans\Stored Procedures\sp_set_rcs_input_rack.sql" />
+    <Build Include="material\Stored Procedures\sp_get_material_type_list.sql" />
+    <Build Include="trans\Stored Procedures\sp_set_rcs_remove_rack.sql" />
+    <Build Include="man\Stored Procedures\sp_get_product_families.sql" />
+    <Build Include="material\Stored Procedures\sp_get_item_labels.sql" />
+    <Build Include="lds\Stored Procedures\sp_create_lot_record_column.sql" />
+    <Build Include="lds\Stored Procedures\sp_get_lot_record_templates.sql" />
+    <Build Include="lds\Stored Procedures\sp_set_lot_record_template.sql" />
+    <Build Include="lds\Stored Procedures\sp_get_lot_record_menu_template.sql" />
+    <Build Include="api\Stored Procedures\sp_ocr_update_request.sql" />
+    <Build Include="lds\Stored Procedures\sp_set_lot_record_menu_template.sql" />
+    <Build Include="trans\Stored Procedures\sp_get_reset_rack.sql" />
+    <Build Include="lds\Stored Procedures\sp_set_lot_transaction.sql" />
+    <Build Include="lds\Stored Procedures\sp_set_lot_extends.sql" />
+    <Build Include="material\Stored Procedures\sp_set_input_chipbank.sql" />
+    <Build Include="lds\Stored Procedures\sp_get_extend_column.sql" />
+    <Build Include="trans\Stored Procedures\sp_set_regist_esl.sql" />
+    <Build Include="lds\Stored Procedures\sp_get_lot_extend_info.sql" />
+    <Build Include="atom\Stored Procedures\sp_get_check_flow_in_ogi.sql" />
+    <Build Include="lds\Stored Procedures\sp_get_unmapped_lot_record_columns.sql" />
+    <Build Include="trans\Stored Procedures\sp_get_check_esl.sql" />
+    <Build Include="man\Stored Procedures\sp_get_employee_list.sql" />
+    <Build Include="api\Stored Procedures\sp_user_read_authentication.sql" />
+    <Build Include="api\Stored Procedures\sp_read_cac_wip_monitoring_main.sql" />
+    <Build Include="material\Stored Procedures\sp_get_chipbank_orderwf_history.sql" />
+    <Build Include="trans\Stored Procedures\sp_set_clear_esl.sql" />
+    <Build Include="api\Stored Procedures\sp_read_method_get_process.sql" />
+    <Build Include="material\Stored Procedures\sp_get_chipbank_orderwf_remain.sql" />
+    <Build Include="trans\Stored Procedures\sp_exec_sp_history_eslip.sql" />
+    <Build Include="api\Stored Procedures\sp_read_machine_get_machine_by_process.sql" />
+    <Build Include="material\Stored Procedures\sp_get_material_info.sql" />
+    <Build Include="material\Stored Procedures\sp_get_wfdata_chipbank.sql" />
+    <Build Include="api\Stored Procedures\sp_read_andon_get_record.sql" />
+    <Build Include="man\Stored Procedures\sp_get_organization.sql" />
+    <Build Include="trans\Stored Procedures\sp_set_rcs_update.sql" />
+    <Build Include="api\Stored Procedures\sp_create_trc_add_record.sql" />
+    <Build Include="api\Stored Procedures\sp_read_andon_get_abnormal_mode.sql" />
+    <Build Include="api\Stored Procedures\sp_read_lot_get_package_device_by_lot_no.sql" />
+    <Build Include="man\Stored Procedures\sp_get_shift_calendars.sql" />
+    <Build Include="trans\Stored Procedures\sp_set_rcs_remove.sql" />
+    <Build Include="man\Stored Procedures\sp_get_positionlevel.sql" />
+    <Build Include="trans\Stored Procedures\sp_get_rcs_rack.sql" />
+    <Build Include="material\Stored Procedures\sp_get_flow_patterns.sql" />
+    <Build Include="material\Stored Procedures\sp_get_flow_details.sql" />
+    <Build Include="api\Stored Procedures\sp_andon_create_record.sql" />
+    <Build Include="material\Stored Procedures\sp_get_productions.sql" />
+    <Build Include="api\Stored Procedures\sp_andon_read_process.sql" />
+    <Build Include="material\Stored Procedures\sp_get_materials_stock_list.sql" />
+    <Build Include="api\Stored Procedures\sp_andon_read_machine.sql" />
+    <Build Include="method\Stored Procedures\sp_get_label_shipment_logo.sql" />
+    <Build Include="api\Stored Procedures\sp_read_man_user_authentication.sql" />
+    <Build Include="method\Stored Procedures\sp_set_label_shipment_logo.sql" />
+    <Build Include="api\Stored Procedures\sp_read_man_user_application_list.sql" />
+    <Build Include="api\Stored Procedures\sp_andon_read_lot.sql" />
+    <Build Include="api\Stored Procedures\sp_andon_read_abnormal.sql" />
+    <Build Include="atom\Stored Procedures\sp_get_cutcard_alllot.sql" />
+    <Build Include="api\Stored Procedures\sp_read_ocr_get_mark_info.sql" />
+    <Build Include="trans\Stored Procedures\sp_get_rcs_rack_pro.sql" />
+    <Build Include="api\Stored Procedures\sp_andon_read_record.sql" />
+    <Build Include="atom\Stored Procedures\sp_get_lot_in_process.sql" />
+    <Build Include="api\Stored Procedures\sp_create_ocr_add_record.sql" />
+    <Build Include="api\Stored Procedures\sp_andon_read_user.sql" />
+    <Build Include="api\Stored Procedures\sp_andon_read_record_id.sql" />
+    <Build Include="atom\Stored Procedures\sp_get_trans_lot_flows_operator.sql" />
+    <Build Include="api\Stored Procedures\sp_update_ocr_qc_state.sql" />
+    <Build Include="api\Stored Procedures\sp_andon_read_location.sql" />
+    <Build Include="api\Stored Procedures\sp_andon_update_record.sql" />
+    <Build Include="api\Stored Procedures\sp_read_andon_get_record_by_id.sql" />
+    <Build Include="api\Stored Procedures\sp_trc_read_abnormal.sql" />
+    <Build Include="api\Stored Procedures\sp_read_andon_get_record_by_process.sql" />
+    <Build Include="api\Stored Procedures\sp_trc_read_lot.sql" />
+    <Build Include="api\Stored Procedures\sp_trc_read_machine.sql" />
+    <Build Include="api\Stored Procedures\sp_trc_read_process.sql" />
+    <Build Include="api\Stored Procedures\sp_trc_create_record.sql" />
+    <Build Include="trans\Stored Procedures\sp_set_compare_label.sql" />
+    <Build Include="api\Stored Procedures\sp_trc_update_record.sql" />
+    <Build Include="api\Stored Procedures\sp_update_trc_clear_record.sql" />
+    <Build Include="trans\Stored Procedures\sp_get_data_history_label.sql" />
+    <Build Include="api\Stored Procedures\sp_trc_read_item.sql" />
+    <Build Include="api\Stored Procedures\sp_trc_read_type.sql" />
+    <Build Include="mc\Stored Procedures\sp_get_machines.sql" />
+    <Build Include="mc\Stored Procedures\sp_set_regis_machines.sql" />
+    <Build Include="mc\Stored Procedures\sp_set_edit_machines.sql" />
+    <Build Include="material\Stored Procedures\sp_get_stock_in_pc.sql" />
+    <Build Include="api\Stored Procedures\sp_andon_read_status.sql" />
+    <Build Include="lds\Stored Procedures\sp_set_lot_process_record.sql" />
+    <Build Include="api\Stored Procedures\sp_trc_read_user.sql" />
+    <Build Include="man\Stored Procedures\sp_get_filter_man.sql" />
+    <Build Include="api\Stored Procedures\sp_ocr_read_mark.sql" />
+    <Build Include="material\Stored Procedures\sp_get_supplier.sql" />
+    <Build Include="api\Stored Procedures\sp_update_ocr_clear_qc_state.sql" />
+    <Build Include="api\Stored Procedures\sp_ocr_read_condition.sql" />
+    <Build Include="material\Stored Procedures\sp_get_material_locations.sql" />
+    <Build Include="api\Stored Procedures\sp_read_ocr_record.sql" />
+    <Build Include="api\Stored Procedures\sp_ocr_read_lot.sql" />
+    <Build Include="material\Stored Procedures\sp_get_stock_out_pc.sql" />
+    <Build Include="api\Stored Procedures\sp_ocr_create_andon.sql" />
+    <Build Include="man\Stored Procedures\sp_set_change_password.sql" />
+    <Build Include="api\Stored Procedures\sp_ocr_update_qc_state.sql" />
+    <Build Include="trans\Stored Procedures\andon_insert.sql" />
+    <Build Include="api\Stored Procedures\sp_ocr_create_record.sql" />
+    <Build Include="trans\Stored Procedures\sp_set_regist_e_slip.sql" />
+    <Build Include="trans\Stored Procedures\andon_clear.sql" />
+    <Build Include="trans\Stored Procedures\sp_set_clear_e_slip.sql" />
+    <Build Include="trans\Stored Procedures\andon_view_item.sql" />
+    <Build Include="trans\Stored Procedures\andon_view_records.sql" />
+    <Build Include="material\Stored Procedures\sp_get_stock_in_pd.sql" />
+    <Build Include="mc\Stored Procedures\sp_get_mc_maker.sql" />
+    <Build Include="mc\Stored Procedures\sp_get_mc_groups.sql" />
+    <Build Include="mc\Stored Procedures\sp_get_mc_models.sql" />
+    <Build Include="mc\Stored Procedures\sp_get_mc_group_models.sql" />
+    <Build Include="material\Stored Procedures\sp_get_stock_in_pd_detail.sql" />
+    <Build Include="material\Stored Procedures\sp_set_stock_out_pc.sql" />
+    <Build Include="material\Stored Procedures\sp_set_stock_in_pd.sql" />
+    <Build Include="material\Stored Procedures\sp_get_stock_out_pd.sql" />
+    <Build Include="api\Stored Procedures\sp_ocr_read_compare.sql" />
+    <Build Include="material\Stored Procedures\sp_set_stock_out_pd.sql" />
+    <Build Include="material\Stored Procedures\sp_set_remove_stock_out.sql" />
+    <Build Include="api\Stored Procedures\sp_read_ocr_get_mark_condition.sql" />
+    <Build Include="jig\Stored Procedures\sp_set_carrier_cleaned.sql" />
+    <Build Include="mc\Stored Procedures\sp_set_models.sql" />
+    <Build Include="material\Stored Procedures\sp_set_delete_receiving.sql" />
+    <Build Include="jig\Stored Procedures\sp_set_carrier_endlot.sql" />
+    <Build Include="trans\Stored Procedures\sp_set_resin_prepare_time.sql" />
+    <Build Include="jig\Stored Procedures\sp_get_carrier_check.sql" />
+    <Build Include="mc\Stored Procedures\sp_get_mc_location.sql" />
+    <Build Include="trans\Stored Procedures\sp_get_resin_label.sql" />
+    <Build Include="mc\Stored Procedures\sp_get_machine_level.sql" />
+    <Build Include="trans\Stored Procedures\sp_get_resin_prepare_list.sql" />
+    <Build Include="trans\Stored Procedures\get_matching_lotoutsource.sql" />
+    <Build Include="man\Stored Procedures\sp_get_license.sql" />
+    <Build Include="jig\Stored Procedures\sp_get_jig_check.sql" />
+    <Build Include="trans\Stored Procedures\sp_exec_sp_history.sql" />
+    <Build Include="jig\Stored Procedures\sp_get_jig_setup.sql" />
+    <Build Include="trans\Stored Procedures\sp_get_material_type.sql" />
+    <Build Include="man\Stored Procedures\sp_get_license_user_machine.sql" />
+    <Build Include="jig\Stored Procedures\sp_set_jig_endlot.sql" />
+    <Build Include="trans\Stored Procedures\sp_get_material_status.sql" />
+    <Build Include="material\Stored Procedures\sp_get_stock_in_pc_detail.sql" />
+    <Build Include="jig\Stored Procedures\sp_set_jig_outoffmachine.sql" />
+    <Build Include="trans\Stored Procedures\sp_set_material_outoffmachine.sql" />
+    <Build Include="jig\Stored Procedures\sp_set_jig_setup.sql" />
+    <Build Include="trans\Stored Procedures\sp_set_material_endlot.sql" />
+    <Build Include="material\Stored Procedures\sp_get_filter.sql" />
+    <Build Include="api\Stored Procedures\sp_update_ocr_denpyo_logo.sql" />
+    <Build Include="material\Stored Procedures\sp_set_stock_in_pc_receiving.sql" />
+    <Build Include="jig\Stored Procedures\sp_set_kanagata_cleanshot.sql" />
+    <Build Include="trans\Stored Procedures\sp_set_material_setup.sql" />
+    <Build Include="material\Stored Procedures\sp_set_pickup_repack.sql" />
+    <Build Include="api\Stored Procedures\sp_read_ocr_get_lot_by_lot_no.sql" />
+    <Build Include="material\Stored Procedures\sp_set_process_receiving.sql" />
+    <Build Include="jig\Stored Procedures\sp_set_carrier_appearance.sql" />
+    <Build Include="material\Stored Procedures\sp_set_categories.sql" />
+    <Build Include="jig\Stored Procedures\sp_set_jig_workrecord.sql" />
+    <Build Include="Security\api.sql" />
+    <Build Include="Security\atom.sql" />
+    <Build Include="Security\jig.sql" />
+    <Build Include="Security\lds.sql" />
+    <Build Include="Security\man.sql" />
+    <Build Include="Security\material.sql" />
+    <Build Include="Security\mc.sql" />
+    <Build Include="Security\method.sql" />
+    <Build Include="Security\trans.sql" />
+  </ItemGroup>
+</Project>

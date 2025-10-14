@@ -1,0 +1,2 @@
+﻿CREATE USER [RIST\ICT DB Admins] FOR LOGIN [RIST\ICT DB Admins];
+

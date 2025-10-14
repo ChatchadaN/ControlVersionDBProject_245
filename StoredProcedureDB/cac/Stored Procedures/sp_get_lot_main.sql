@@ -1,0 +1,101 @@
+﻿-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+CREATE PROCEDURE [cac].[sp_get_lot_main]
+	-- Add the parameters for the stored procedure here
+	@package_group varchar(50) = '%'
+	, @package varchar(50) = '%'
+	, @lot_type varchar(50) = '%'
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	--select [master_data].[package_group]
+	--	, [master_data].[package]
+	--	, [master_data].[job]
+	--	, case when [lot].[normal] is null then 0 else [lot].[normal] end as [normal]
+	--	, case when [lot].[delay] is null then 0 else [lot].[delay] end as [delay]
+	--	, case when [lot].[order_deley] is null then 0 else [lot].[order_deley] end as [order_deley]
+	--	, case when [lot].[order_deley_hold] is null then 0 else [lot].[order_deley_hold] end as [order_deley_hold]
+	--	, case when [lot].[hold] is null then 0 else [lot].[hold] end as [hold]
+	--	, case when [lot].[total] is null then 0 else [lot].[total] end as [total]
+	--	, case when [lot].[machine] is null then 0 else [lot].[machine] end as [machine]
+	--	, case when [lot_max].[actual_result] is null then 0 else [lot_max].[actual_result] end as [actual_result]
+	--	, case when [lot_max].[yesterday_result] is null then 0 else [lot_max].[yesterday_result] end as [yesterday_result]
+	--from
+	--	(select [package_groups].[name] as [package_group]
+	--	, [packages].[name] as [package]
+	--	, [jobs].[name] as [job]
+	--	from [APCSProDB].[trans].[lots]
+	--	inner join [APCSProDB].[method].[device_slips] on [device_slips].[device_slip_id] = [lots].[device_slip_id]
+	--	inner join [APCSProDB].[method].[device_versions] on [device_versions].[device_id] = [device_slips].[device_id]
+	--	inner join [APCSProDB].[method].[device_names] on [device_names].[id] = [device_versions].[device_name_id]
+	--	inner join [APCSProDB].[method].[packages] on [packages].[id] = [device_names].[package_id]
+	--	inner join [APCSProDB].[method].[package_groups] on [package_groups].[id] = [packages].[package_group_id]
+	--	inner join [APCSProDB].[method].[device_flows] on [device_flows].[device_slip_id] = [lots].[device_slip_id]
+	--	inner join [APCSProDB].[method].[jobs] on [jobs].[id] = [device_flows].[job_id]
+	--	where [APCSProDB].[trans].[lots].[wip_state] = '20'
+	--	and [APCSProDB].[method].[device_flows].[is_skipped] = '0'
+	--	and [APCSProDB].[trans].[lots].[lot_no] like '%' + @lot_type + '%'
+	--	and [APCSProDB].[method].[packages].[name] like '%' + @package + '%'
+	--	and [APCSProDB].[method].[package_groups].[name] like '%' + @package_group + '%'
+	--	group by [package_groups].[name], [packages].[name], [jobs].[name]) as [master_data]
+	--left join (select [package_groups].[name] as [package_group]
+	--		, [packages].[name] as [package]
+	--		, [jobs].[name] as [job]
+	--		, COUNT(lots.lot_no) as [normal]
+	--		, COUNT(lots.lot_no) as [delay]
+	--		, COUNT(case when DATEDIFF(DAY,[days2].[date_value],GETDATE()) >= 0 then [APCSProDB].[trans].[lots].[lot_no] else NULL end) as [order_deley] 
+	--		, COUNT(case when DATEDIFF(DAY,[days2].[date_value],GETDATE()) >= 0 and [APCSProDB].[trans].[lots].[quality_state] = 3 then [APCSProDB].[trans].[lots].[lot_no] else NULL end) as [order_deley_hold] 
+	--		, COUNT(case when [APCSProDB].[trans].[lots].[quality_state] = 3 then [APCSProDB].[trans].[lots].[lot_no] else NULL end) as [hold] 
+	--		, COUNT(lots.lot_no) as [total]
+	--		, COUNT(case when [APCSProDB].[trans].[lots].[process_state] not in('0','3','100') then [APCSProDB].[trans].[lots].[lot_no] else NULL end) as [machine]
+	--	from [APCSProDB].[trans].[lots]
+	--	inner join [APCSProDB].[method].[device_slips] on [device_slips].[device_slip_id] = [lots].[device_slip_id]
+	--	inner join [APCSProDB].[method].[device_versions] on [device_versions].[device_id] = [device_slips].[device_id]
+	--	inner join [APCSProDB].[method].[device_names] on [device_names].[id] = [device_versions].[device_name_id]
+	--	inner join [APCSProDB].[method].[packages] on [packages].[id] = [device_names].[package_id]
+	--	inner join [APCSProDB].[method].[package_groups] on [package_groups].[id] = [packages].[package_group_id]
+	--	inner join [APCSProDB].[method].[device_flows] on [device_flows].[device_slip_id] = [lots].[device_slip_id] and [device_flows].[step_no] = [lots].[step_no]
+	--	inner join [APCSProDB].[method].[jobs] on [jobs].[id] = [device_flows].[job_id]
+	--	inner join [APCSProDB].[trans].[days] as [days2] on [days2].[id] = [lots].[out_plan_date_id]
+	--	where [APCSProDB].[trans].[lots].[wip_state] = '20'
+	--	and [APCSProDB].[trans].[lots].[lot_no] like '%' + @lot_type + '%'
+	--	and [APCSProDB].[method].[packages].[name] like '%' + @package + '%'
+	--	and [APCSProDB].[method].[package_groups].[name] like '%' + @package_group + '%'
+	--	group by [package_groups].[name], [packages].[name], [jobs].[name]) as [lot] on [lot].[package_group] = [master_data].[package_group] and [lot].[package] = [master_data].[package] and [lot].[job] = [master_data].[job]
+	--left join (select [package_groups].[name] as [package_group]
+	--		, [packages].[name] as [package]
+	--		, [jobs].[name] as [job]
+	--		, COUNT(case when [lot_max].[max_date] < convert(varchar(10), GETDATE(), 120) + ' 08:00:00' then [lots].[id] else NULL end) as [actual_result]
+	--		, COUNT(case when [lot_max].[max_date] >= convert(varchar(10), GETDATE(), 120) + ' 08:00:00' then [lots].[id] else NULL end) as [yesterday_result]
+	--	from [APCSProDB].[trans].[lots]
+	--	inner join (select [lot_process_records].[lot_id]
+	--		, [lot_process_records].[step_no]
+	--		, MAX(recorded_at) as max_date
+	--		from [APCSProDB].[trans].[lot_process_records]
+	--		inner join [APCSProDB].[trans].[lots] on [lots].[id] = [lot_process_records].[lot_id]
+	--		where [APCSProDB].[trans].[lots].[wip_state] = '20'
+	--		and [APCSProDB].[trans].[lot_process_records].[record_class] = 2
+	--		and [APCSProDB].[trans].[lot_process_records].[recorded_at] >= convert(varchar(10), GETDATE() - 1, 120) + ' 08:00:00'
+	--		and [APCSProDB].[trans].[lots].[lot_no] like '%' + @lot_type + '%'
+	--		group by [lot_process_records].[lot_id], [lot_process_records].[step_no]) as [lot_max] on [lot_max].[lot_id] = [lots].[id]
+	--	inner join [APCSProDB].[method].[device_slips] on [device_slips].[device_slip_id] = [lots].[device_slip_id]
+	--	inner join [APCSProDB].[method].[device_versions] on [device_versions].[device_id] = [device_slips].[device_id]
+	--	inner join [APCSProDB].[method].[device_names] on [device_names].[id] = [device_versions].[device_name_id]
+	--	inner join [APCSProDB].[method].[packages] on [packages].[id] = [device_names].[package_id]
+	--	inner join [APCSProDB].[method].[package_groups] on [package_groups].[id] = [packages].[package_group_id]
+	--	inner join [APCSProDB].[method].[device_flows] on [device_flows].[device_slip_id] = [lots].[device_slip_id] and [device_flows].[step_no] = [lot_max].[step_no]
+	--	inner join [APCSProDB].[method].[jobs] on [jobs].[id] = [device_flows].[job_id]
+	--	where [APCSProDB].[trans].[lots].[wip_state] = '20'
+	--	and [APCSProDB].[trans].[lots].[lot_no] like '%' + @lot_type + '%'
+	--	and [APCSProDB].[method].[packages].[name] like '%' + @package + '%'
+	--	and [APCSProDB].[method].[package_groups].[name] like '%' + @package_group + '%'
+	--	group by [package_groups].[name], [packages].[name], [jobs].[name]) as [lot_max] on [lot_max].[package_group] = [master_data].[package_group] and [lot_max].[package] = [master_data].[package] and [lot_max].[job] = [master_data].[job]
+	--order by [master_data].[package_group], [master_data].[package], [master_data].[job]
+END

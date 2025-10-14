@@ -1,0 +1,3 @@
+﻿CREATE LOGIN [RIST\ICT ReaderGroup]
+    FROM WINDOWS WITH DEFAULT_LANGUAGE = [us_english];
+

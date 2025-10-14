@@ -1,0 +1,3 @@
+﻿CREATE SCHEMA [rans]
+    AUTHORIZATION [dbo];
+

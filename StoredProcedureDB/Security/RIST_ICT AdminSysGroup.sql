@@ -1,0 +1,2 @@
+﻿CREATE USER [RIST\ICT AdminSysGroup] FOR LOGIN [RIST\ICT AdminSysGroup];
+

@@ -1,0 +1,3 @@
+﻿CREATE LOGIN [RIST\ICT APIDevGroup]
+    FROM WINDOWS WITH DEFAULT_LANGUAGE = [us_english];
+

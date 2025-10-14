@@ -1,0 +1,3 @@
+﻿CREATE LOGIN [RIST\ICT DataInterfaceGroup]
+    FROM WINDOWS WITH DEFAULT_LANGUAGE = [us_english];
+

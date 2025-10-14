@@ -1,0 +1,281 @@
+﻿-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+CREATE PROCEDURE [cellcon].[sp_get_current_trans_lots] 
+	-- Add the parameters for the stored procedure here
+	@lot_no varchar(10)
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+	IF(@lot_no != '9999D9999V' AND @lot_no != '9999A9999V' AND @lot_no != '9999D8888V' AND @lot_no != '1234A1234V')
+	BEGIN
+		SELECT TOP 1 [lots].[id]					as LotId
+			 , [lots].[lot_no]				as LotNo
+			 , [packages].[name]			as Package
+			 , [packages].[short_name]		as PackageShortname  
+			 , [lots].[act_package_id]		as PackageId 
+			 , [device_names].[name]		as Device
+			 , [device_names].[assy_name]	as Assy_Name
+			 , CASE WHEN [lots].[is_special_flow] = 1	THEN [special_flows].step_no 
+		 												ELSE [lots].[step_no]	
+		 												END							as StepNo
+			 , CASE WHEN [lots].[is_special_flow] = 1	THEN [job2].[name] 
+		 												ELSE [jobs].[name] 
+		 												END							as FlowName
+			 , CASE WHEN [lots].[is_special_flow] = 1	THEN [job2].[id] 
+		 												ELSE [jobs].[id] 
+		 												END							as FlowId       
+			 , [lots].[qty_in]				as Input
+			 , [lots].[qty_pass]			as Good
+			 , [lots].[qty_fail]			as NG
+			 , [lots].[qty_frame_in]		as FrameInput
+			 , [lots].[qty_frame_pass]		as FramePass
+			 , [lots].[qty_frame_fail]		as FrameFail
+			 , [lots].[qty_last_pass]		as GoodBeforeProcess
+			 , [lots].[qty_last_fail]		as NgBeforeProcess
+			 , [lots].[qty_pass_step_sum]	as GoodStepSum
+			 , [lots].[qty_fail_step_sum]	as NgStepSum
+			 , [lots].[qty_p_nashi]			as PNashi
+			 , [lots].[qty_front_ng]		as FrontNg
+			 , [lots].[qty_marker]			as MarkerNg
+			 , [lots].[qty_cut_frame]		as CutFrame
+			 , [packages].[pcs_per_work]	as PcsPerFrame
+			 , [lots].[qty_combined]		as Combine
+			 --, [lots].[qty_out]				as Shipment
+			 , IIF([lots].[pc_instruction_code] = 11,([lots].[qty_out] + [lots].[qty_hasuu]),[lots].[qty_out]) as Shipment  --Modify 2024/12/20 time : 09.51 by Aomsin
+			 , [lots].[qty_out]				AS qty_out   --add value 2023/11/14 time : 17.07  by free support pc request get data cellcon tp
+			 , [lots].[qty_hasuu]			as Surplus
+			 , [denpyo].[HASU_LOT]			as CategoryLot
+			 , [denpyo].[MANU_COMMENT_4]	AS DenpyoComment4 --add value 2024/10/28 time : 16.04  by free support Important Special Control Device Massage
+			 , [days1].[date_value]			as InputDate
+			 , [days2].[date_value]			as ShipDate
+			 , [item_labels1].[label_eng]	as WipState
+			 , CASE WHEN [lots].[is_special_flow] = 1	THEN [item_labels6].[label_eng] 
+		 												ELSE [item_labels2].[label_eng] 
+		 												END							as ProcessState
+			 , [item_labels3].[label_eng]	AS QualityState
+			 , [item_labels4].[label_eng]	AS FirstIns
+			 , [item_labels5].[label_eng]	AS FinalIns
+			 , [lots].[is_special_flow]		AS IsSpecialFlow
+			 , [lots].[priority]			AS [Priority]
+			 , [lots].[finished_at]			AS EndLotTime
+			 , [machines].[name]			AS MachineName
+			 , [lots].[container_no]		AS ContainerNo
+			 , [lots].[std_time_sum]		AS STDTimeSum
+			 , [lots].[m_no]				AS MarkingNo
+			 , [comments].[val]				AS QCComment
+			 , CONCAT([device_names].[tp_rank], ' Ver ' , CONVERT(varchar(3),[device_slips].[version_num])) AS TPRank
+			 , CASE WHEN DATEDIFF(DAY,[days2].[date_value],GETDATE()) >= 0	THEN 'OrderDelay' 
+																			ELSE 'Normal' 
+																			END								AS [Delay]
+			 , DATEDIFF(DAY,[days2].[date_value],GETDATE()) as DelayDay, [lots].[updated_at]				AS [Time]
+			 , [users1].[emp_num]			AS Operator
+			 , [package_groups].[name]		AS PackageGroup
+			 , [processes].[name]			AS ProcessName
+			 , [processes].id				AS ProcessID
+			 , [lots].[production_category] AS ProductionCategory
+			 , [device_names].[ft_name]		AS FT_Name
+			 , [device_names].[rank]		AS LotOISRank
+			 , CONCAT([device_names].[rank], [device_names].[tp_rank])										AS FullRank
+			 , CASE WHEN [lots].[special_flow_id] IS NULL	THEN '0' 
+		 													ELSE [lots].[special_flow_id]
+		 													END												AS SpecialFlowId   
+			 , CASE
+					WHEN [FORM_NAME_1] IS NOT NULL AND [FORM_NAME_1] != '' THEN [denpyo].[FORM_NAME_1]
+					WHEN [FORM_NAME_2] IS NOT NULL AND [FORM_NAME_2] != '' THEN [denpyo].[FORM_NAME_2]
+					WHEN [FORM_NAME_3] IS NOT NULL AND [FORM_NAME_3] != '' THEN [denpyo].[FORM_NAME_3]
+					WHEN [FORM_NAME_4] IS NOT NULL AND [FORM_NAME_4] != '' THEN [denpyo].[FORM_NAME_4]
+					WHEN [FORM_NAME_6] IS NOT NULL AND [FORM_NAME_6] != '' THEN [denpyo].[FORM_NAME_6]
+					ELSE NULL
+					END						AS DenpyoPackageName
+			 , [denpyo].[PACKAGE_FORM_NAME] AS DenpyoDeviceName
+			 , [device_names].[is_memory_device]	AS IsMemoryDevice
+			 , [device_flows].ng_retest_permitted	AS isNGRetestPermitted
+			 , [lots].pc_instruction_code	AS PCCode
+			 , [lots].qty_fail_details		AS NGDetails
+			 , [lots].e_slip_id				As ESLCardId
+			 , CASE 
+			        WHEN lot_multi_chips.child_lot_id is not  null then  'True'
+					ELSE 'False'
+					END AS IsChildLot 
+		from [APCSProDB].[trans].[lots]  with (NOLOCK)
+
+		inner join [APCSProDB].[method].[device_flows]						with (NOLOCK) on [device_flows].device_slip_id = [lots].device_slip_id AND [device_flows].job_id = [lots].act_job_id
+		inner join [APCSProDB].[method].[device_slips]						with (NOLOCK) on [device_slips].[device_slip_id] = [lots].[device_slip_id]
+		inner join [APCSProDB].[method].[packages]							with (NOLOCK) on [packages].[id]		= [lots].[act_package_id]
+		inner join [APCSProDB].[method].[package_groups]					with (NOLOCK) on [package_groups].[id]	= [packages].[package_group_id]
+		inner join [APCSProDB].[method].[device_names]						with (NOLOCK) on [device_names].[id]	= [lots].[act_device_name_id]
+		inner join [APCSProDB].[method].[jobs]								with (NOLOCK) on [jobs].[id]			= [lots].[act_job_id]
+		inner join [APCSProDB].[method].[processes]							with (NOLOCK) on [processes].[id]		= [lots].[act_process_id]
+		inner join [APCSProDB].[trans].[days]			AS [days1]			with (NOLOCK) on [days1].[id]			= [lots].[in_plan_date_id]
+		inner join [APCSProDB].[trans].[days]			AS [days2]			with (NOLOCK) on [days2].[id]			= [lots].[out_plan_date_id]
+		inner join [APCSProDB].[trans].[item_labels]	AS [item_labels1]	with (NOLOCK) on [item_labels1].[name]	= 'lots.wip_state'		 and [item_labels1].[val] = [lots].[wip_state]
+		inner join [APCSProDB].[trans].[item_labels]	AS [item_labels2]	with (NOLOCK) on [item_labels2].[name]	= 'lots.process_state'	 and [item_labels2].[val] = [lots].[process_state]
+		inner join [APCSProDB].[trans].[item_labels]	AS [item_labels3]	with (NOLOCK) on [item_labels3].[name]	= 'lots.quality_state'	 and [item_labels3].[val] = [lots].[quality_state]
+		left join [APCSProDB].[trans].[item_labels]		AS [item_labels4]	with (NOLOCK) on [item_labels4].[name]	= 'lots.first_ins_state' and [item_labels4].[val] = [lots].[first_ins_state]
+		left join [APCSProDB].[trans].[item_labels]		AS [item_labels5]	with (NOLOCK) on [item_labels5].[name]	= 'lots.final_ins_state' and [item_labels5].[val] = [lots].[final_ins_state]
+		left join [APCSProDB].[mc].[machines]								with (NOLOCK) on [machines].[id]	= [lots].[machine_id]
+		left join [APCSProDB].[trans].[comments]							with (NOLOCK) on [comments].[id]	= [lots].[qc_comment_id]
+		left join [APCSProDB].[man].[users]				AS [users1]			with (NOLOCK) on [users1].[id]		= [lots].[updated_by]
+		left join [APCSProDB].[trans].[special_flows]						with (NOLOCK) on [special_flows].[id]		= [lots].[special_flow_id]	
+																						 and [lots].[is_special_flow]	= 1
+																						 and [special_flows].wip_state	= 20
+		left join [APCSProDB].[trans].[lot_special_flows]					with (NOLOCK) on [lot_special_flows].[special_flow_id]	= [special_flows].[id]
+																						 and [lot_special_flows].step_no			= [special_flows].step_no
+		left join [APCSProDB].[method].[jobs]			AS [job2]			with (NOLOCK) on [job2].[id] = [lot_special_flows].[job_id]
+		left join [APCSProDB].[trans].[item_labels]		AS [item_labels6]	with (NOLOCK) on [item_labels6].[name]	= 'lots.process_state'
+																						 and [item_labels6].[val]	= [special_flows].[process_state]
+		left join [APCSProDB].[dbo].[LCQW_UNION_WORK_DENPYO_PRINT] AS [denpyo]	with (NOLOCK) on ([denpyo].LOT_NO_1 = [lots].lot_no OR
+																							  [denpyo].LOT_NO_2 = [lots].lot_no OR
+																							  [denpyo].LOT_NO_3 = [lots].lot_no OR
+																							  [denpyo].LOT_NO_4 = [lots].lot_no OR
+																							  [denpyo].LOT_NO_5 = [lots].lot_no OR
+																							  [denpyo].LOT_NO_6 = [lots].lot_no OR
+																							  [denpyo].LOT_NO_7 = [lots].lot_no OR
+																							  [denpyo].LOT_NO_8 = [lots].lot_no OR
+																							  [denpyo].LOT_NO_9 = [lots].lot_no OR
+																							  [denpyo].LOT_NO_10 = [lots].lot_no OR
+																							  [denpyo].LOT_NO_11 = [lots].lot_no OR
+																							  [denpyo].LOT_NO_12 = [lots].lot_no)
+		left join [APCSProDB].[trans].[lot_multi_chips] on [APCSProDB].trans.lot_multi_chips.child_lot_id = [APCSProDB].trans.lots.id
+		where [item_labels1].[val] in ('20') and [packages].[is_enabled] = 1 and [lots].[lot_no] = @lot_no
+
+		order by [lots].[lot_no]
+	END
+
+	ELSE --Lot test no Pkg and Device from Denpyo
+	BEGIN
+		SELECT TOP 1 [lots].[id]					AS LotId
+			 , [lots].[lot_no]				AS LotNo
+			 , [packages].[name]			AS Package
+			 , [packages].[short_name]		AS PackageShortname  
+			 , [lots].[act_package_id]		AS PackageId 
+			 , [device_names].[name]		AS Device
+			 , [device_names].[assy_name]	AS Assy_Name
+			 , CASE WHEN [lots].[is_special_flow] = 1	THEN [special_flows].step_no 
+		 												ELSE [lots].[step_no]	
+		 												END							AS StepNo
+			 , CASE WHEN [lots].[is_special_flow] = 1	THEN [job2].[name] 
+		 												ELSE [jobs].[name] 
+		 												END							AS FlowName
+			 , CASE WHEN [lots].[is_special_flow] = 1	THEN [job2].[id] 
+		 												ELSE [jobs].[id] 
+		 												END							AS FlowId       
+			 , [lots].[qty_in]				AS Input
+			 , [lots].[qty_pass]			AS Good
+			 , [lots].[qty_fail]			AS NG
+			 , [lots].[qty_frame_in]		AS FrameInput
+			 , [lots].[qty_frame_pass]		AS FramePass
+			 , [lots].[qty_frame_fail]		AS FrameFail
+			 , [lots].[qty_last_pass]		AS GoodBeforeProcess
+			 , [lots].[qty_last_fail]		AS NgBeforeProcess
+			 , [lots].[qty_pass_step_sum]	AS GoodStepSum
+			 , [lots].[qty_fail_step_sum]	AS NgStepSum
+			 , [lots].[qty_p_nashi]			AS PNashi
+			 , [lots].[qty_front_ng]		AS FrontNg
+			 , [lots].[qty_marker]			AS MarkerNg
+			 , [lots].[qty_cut_frame]		AS CutFrame
+			 , [packages].[pcs_per_work]	AS PcsPerFrame
+			 , [lots].[qty_combined]		AS Combine
+			 --, [lots].[qty_out]				AS Shipment
+			 , IIF([lots].[pc_instruction_code] = 11,([lots].[qty_out] + [lots].[qty_hasuu]),[lots].[qty_out]) as Shipment  --Modify 2024/12/20 time : 09.51 by Aomsin
+			 , [lots].[qty_out]				AS qty_out   --add value 2023/11/14 time : 17.07  by free support pc request get data cellcon tp
+			 , [lots].[qty_hasuu]			AS Surplus
+			 , [denpyo].[HASU_LOT]			AS CategoryLot
+			 , [denpyo].[MANU_COMMENT_4]	AS DenpyoComment4 --add value 2024/10/28 time : 16.04  by free support Important Special Control Device Massage
+			 , [days1].[date_value]			AS InputDate
+			 , [days2].[date_value]			AS ShipDate
+			 , [item_labels1].[label_eng]	AS WipState
+			 , CASE WHEN [lots].[is_special_flow] = 1	THEN [item_labels6].[label_eng] 
+		 												ELSE [item_labels2].[label_eng] 
+		 												END													AS ProcessState
+			 , [item_labels3].[label_eng]	AS QualityState
+			 , [item_labels4].[label_eng]	AS FirstIns
+			 , [item_labels5].[label_eng]	AS FinalIns
+			 , [lots].[is_special_flow]		AS IsSpecialFlow
+			 , [lots].[priority]			AS [Priority]
+			 , [lots].[finished_at]			AS EndLotTime
+			 , [machines].[name]			AS MachineName
+			 , [lots].[container_no]		AS ContainerNo
+			 , [lots].[std_time_sum]		AS STDTimeSum
+			 , [lots].[m_no]				AS MarkingNo
+			 , [comments].[val]				AS QCComment
+			 , CONCAT([device_names].[tp_rank], ' Ver ' , CONVERT(varchar(3),[device_slips].[version_num])) AS TPRank
+			 , CASE WHEN DATEDIFF(DAY,[days2].[date_value],GETDATE()) >= 0	THEN 'OrderDelay' 
+																			ELSE 'Normal' 
+																			END								AS [Delay]
+			 , DATEDIFF(DAY,[days2].[date_value],GETDATE()) AS DelayDay
+			 , [lots].[updated_at]			AS [Time]
+			 , [users1].[emp_num]			AS Operator
+			 , [package_groups].[name]		AS PackageGroup
+			 , [processes].[name]			AS ProcessName
+			 , [processes].id				AS ProcessID
+			 , [lots].[production_category] AS ProductionCategory
+			 , [device_names].[ft_name]		AS FT_Name
+			 , [device_names].[rank]		AS LotOISRank
+			 , CONCAT([device_names].[rank], [device_names].[tp_rank])										AS FullRank
+			 , CASE WHEN [lots].[special_flow_id] IS NULL	THEN '0' 
+		 													ELSE [lots].[special_flow_id]
+		 													END												AS SpecialFlowId   
+			 , [packages].[name]			AS DenpyoPackageName
+			 , [device_names].[name]		AS DenpyoDeviceName
+			 , [device_names].[is_memory_device]	AS IsMemoryDevice
+			 , [device_flows].ng_retest_permitted	AS isNGRetestPermitted
+			 , [lots].pc_instruction_code	AS PCCode
+			 , [lots].qty_fail_details		AS NGDetails
+			 , [lots].e_slip_id				As ESLCardId
+			 , CASE 
+			        WHEN lot_multi_chips.child_lot_id is not  null then  'True'
+					ELSE 'False'
+					END AS IsChildLot 
+		from [APCSProDB].[trans].[lots]  with (NOLOCK)
+
+		inner join [APCSProDB].[method].[device_flows]						with (NOLOCK) on [device_flows].device_slip_id = [lots].device_slip_id AND [device_flows].job_id = [lots].act_job_id
+		inner join [APCSProDB].[method].[device_slips]						with (NOLOCK) on [device_slips].[device_slip_id] = [lots].[device_slip_id]
+		inner join [APCSProDB].[method].[packages]							with (NOLOCK) on [packages].[id]		= [lots].[act_package_id]
+		inner join [APCSProDB].[method].[package_groups]					with (NOLOCK) on [package_groups].[id]	= [packages].[package_group_id]
+		inner join [APCSProDB].[method].[device_names]						with (NOLOCK) on [device_names].[id]	= [lots].[act_device_name_id]
+		inner join [APCSProDB].[method].[jobs]								with (NOLOCK) on [jobs].[id]			= [lots].[act_job_id]
+		inner join [APCSProDB].[method].[processes]							with (NOLOCK) on [processes].[id]		= [lots].[act_process_id]
+		inner join [APCSProDB].[trans].[days]			AS [days1]			with (NOLOCK) on [days1].[id]			= [lots].[in_plan_date_id]
+		inner join [APCSProDB].[trans].[days]			AS [days2]			with (NOLOCK) on [days2].[id]			= [lots].[out_plan_date_id]
+		inner join [APCSProDB].[trans].[item_labels]	AS [item_labels1]	with (NOLOCK) on [item_labels1].[name]	= 'lots.wip_state'		 and [item_labels1].[val] = [lots].[wip_state]
+		inner join [APCSProDB].[trans].[item_labels]	AS [item_labels2]	with (NOLOCK) on [item_labels2].[name]	= 'lots.process_state'	 and [item_labels2].[val] = [lots].[process_state]
+		inner join [APCSProDB].[trans].[item_labels]	AS [item_labels3]	with (NOLOCK) on [item_labels3].[name]	= 'lots.quality_state'	 and [item_labels3].[val] = [lots].[quality_state]
+		left join [APCSProDB].[trans].[item_labels]		AS [item_labels4]	with (NOLOCK) on [item_labels4].[name]	= 'lots.first_ins_state' and [item_labels4].[val] = [lots].[first_ins_state]
+		left join [APCSProDB].[trans].[item_labels]		AS [item_labels5]	with (NOLOCK) on [item_labels5].[name]	= 'lots.final_ins_state' and [item_labels5].[val] = [lots].[final_ins_state]
+		left join [APCSProDB].[mc].[machines]								with (NOLOCK) on [machines].[id]	= [lots].[machine_id]
+		left join [APCSProDB].[trans].[comments]							with (NOLOCK) on [comments].[id]	= [lots].[qc_comment_id]
+		left join [APCSProDB].[man].[users]				AS [users1]			with (NOLOCK) on [users1].[id]		= [lots].[updated_by]
+		left join [APCSProDB].[trans].[special_flows]						with (NOLOCK) on [special_flows].[id]		= [lots].[special_flow_id]	
+																						 and [lots].[is_special_flow]	= 1
+																						 and [special_flows].wip_state	= 20
+		left join [APCSProDB].[trans].[lot_special_flows]					with (NOLOCK) on [lot_special_flows].[special_flow_id]	= [special_flows].[id]
+																						 and [lot_special_flows].step_no			= [special_flows].step_no
+		left join [APCSProDB].[method].[jobs]			AS [job2]			with (NOLOCK) on [job2].[id] = [lot_special_flows].[job_id]
+		left join [APCSProDB].[trans].[item_labels]		AS [item_labels6]	with (NOLOCK) on [item_labels6].[name]	= 'lots.process_state'
+																						 and [item_labels6].[val]	= [special_flows].[process_state]
+		left join [APCSProDB].[dbo].[LCQW_UNION_WORK_DENPYO_PRINT] AS [denpyo]	with (NOLOCK) on ([denpyo].LOT_NO_1 = [lots].lot_no OR
+																							  [denpyo].LOT_NO_2 = [lots].lot_no OR
+																							  [denpyo].LOT_NO_3 = [lots].lot_no OR
+																							  [denpyo].LOT_NO_4 = [lots].lot_no OR
+																							  [denpyo].LOT_NO_5 = [lots].lot_no OR
+																							  [denpyo].LOT_NO_6 = [lots].lot_no OR
+																							  [denpyo].LOT_NO_7 = [lots].lot_no OR
+																							  [denpyo].LOT_NO_8 = [lots].lot_no OR
+																							  [denpyo].LOT_NO_9 = [lots].lot_no OR
+																							  [denpyo].LOT_NO_10 = [lots].lot_no OR
+																							  [denpyo].LOT_NO_11 = [lots].lot_no OR
+																							  [denpyo].LOT_NO_12 = [lots].lot_no)
+		left join [APCSProDB].[trans].[lot_multi_chips] on [APCSProDB].trans.lot_multi_chips.child_lot_id = [APCSProDB].trans.lots.id
+		where [item_labels1].[val] in ('20') and [packages].[is_enabled] = 1 and [lots].[lot_no] = @lot_no
+
+		order by [lots].[lot_no]
+	END
+	
+END

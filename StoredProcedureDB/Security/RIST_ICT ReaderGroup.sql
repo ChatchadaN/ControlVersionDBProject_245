@@ -1,0 +1,2 @@
+﻿CREATE USER [RIST\ICT ReaderGroup] FOR LOGIN [RIST\ICT ReaderGroup];
+

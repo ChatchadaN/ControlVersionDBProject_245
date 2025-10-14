@@ -1,0 +1,3 @@
+﻿CREATE LOGIN [RIST\ICT EquipmentOnlineGroup2]
+    FROM WINDOWS WITH DEFAULT_LANGUAGE = [us_english];
+
