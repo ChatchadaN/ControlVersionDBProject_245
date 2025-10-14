@@ -2348,5 +2348,6 @@
     <Build Include="Security\stripmap.sql" />
     <Build Include="Security\tg.sql" />
     <Build Include="Security\trans.sql" />
+    <Build Include="rcs\Stored Procedures\sp_get_rack_testControlVersion.sql" />
   </ItemGroup>
 </Project>
