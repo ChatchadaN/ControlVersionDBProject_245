@@ -13,13 +13,17 @@ BEGIN
 	SET NOCOUNT ON;
 
     -- Insert statements for procedure here
-
-	-- TEST EDIT --
+	
 	SELECT 
-		 rack_controls.name AS rack 
+		rack_controls.id AS rack_id
+		, rack_controls.name AS rack 
 		, rack_categories.id AS category_id
 		, rack_categories.name AS category
+		, rack_controls.location_id
+		, locations.name AS [location]
+		, locations.address AS [area]
 	FROM APCSProDB.rcs.rack_controls
 	INNER JOIN APCSProDB.rcs.rack_categories ON rack_controls.category = rack_categories.id
-	---------------
+	INNER JOIN APCSProDB.trans.locations ON rack_controls.location_id = locations.id
+
 END
