@@ -14,6 +14,9 @@ BEGIN
 
     -- Insert statements for procedure here
 	
+	---- TEST VERSION Control ----
+	---    CHATCHADAPORN N    ----
+
 	SELECT 
 		rack_controls.id AS rack_id
 		, rack_controls.name AS rack 
