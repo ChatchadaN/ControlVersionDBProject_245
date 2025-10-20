@@ -16,6 +16,7 @@ BEGIN
 	
 	---- TEST VERSION Control ----
 	---    CHATCHADAPORN N    ----
+	---  TEST BATCH : RIST    ----
 
 	SELECT 
 		rack_controls.id AS rack_id
